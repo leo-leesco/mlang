@@ -169,8 +169,8 @@ let sort_vars_by_name is_ebcdic vars =
     if is_ebcdic then Strings.compare_ebcdic else Strings.compare_default
   in
   List.fast_sort
-    (fun (_, _, _, _, name1, _, _, _, _, _) (_, _, _, _, name2, _, _, _, _, _) ->
-      compare_name name1 name2)
+    (fun (_, _, _, _, name1, _, _, _, _, _) (_, _, _, _, name2, _, _, _, _, _)
+       -> compare_name name1 name2)
     vars
 
 (* Retrieve all the variables, sorted by alias, and compute their IDs *)
@@ -841,18 +841,18 @@ let gen_compir_h fmt flags vars vars_debug =
     nb_restituee;
 
   (if flags.Dgfip_options.flg_debug then
-   if flags.nb_debug_c <= 0 then
-     let nb = match nb_debug with [ nb ] -> nb | _ -> assert false in
-     Format.fprintf fmt "#define NB_DEBUG %d\n" nb
-   else
-     let i =
-       List.fold_left
-         (fun i nb ->
-           Format.fprintf fmt "#define NB_DEBUG%02d %d\n" i nb;
-           i + 1)
-         1 nb_debug
-     in
-     assert (i = flags.nb_debug_c + 1));
+     if flags.nb_debug_c <= 0 then
+       let nb = match nb_debug with [ nb ] -> nb | _ -> assert false in
+       Format.fprintf fmt "#define NB_DEBUG %d\n" nb
+     else
+       let i =
+         List.fold_left
+           (fun i nb ->
+             Format.fprintf fmt "#define NB_DEBUG%02d %d\n" i nb;
+             i + 1)
+           1 nb_debug
+       in
+       assert (i = flags.nb_debug_c + 1));
 
   Format.fprintf fmt
     {|
